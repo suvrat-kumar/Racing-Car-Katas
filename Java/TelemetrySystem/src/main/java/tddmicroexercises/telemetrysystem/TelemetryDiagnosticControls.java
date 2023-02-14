@@ -4,12 +4,14 @@ public class TelemetryDiagnosticControls
 {
     private final String DiagnosticChannelConnectionString = "*111#";
     
-    private final TelemetryClient telemetryClient;
+    private final ConnectionClient telemetryClient;
+    private final ConnectionClientTemplate telemetryClientTemplate;
     private String diagnosticInfo = "";
 
-        public TelemetryDiagnosticControls()
+        public TelemetryDiagnosticControls(final ConnectionClient telemetryClient, final ConnectionClientTemplate telemetryClientTemplate)
         {
-            telemetryClient = new TelemetryClient();
+            this.telemetryClient = telemetryClient;
+            this.telemetryClientTemplate = telemetryClientTemplate;
         }
         
         public String getDiagnosticInfo(){
@@ -37,8 +39,8 @@ public class TelemetryDiagnosticControls
             {
                 throw new Exception("Unable to connect.");
             }
-    
-            telemetryClient.send(TelemetryClient.DIAGNOSTIC_MESSAGE);
-            diagnosticInfo = telemetryClient.receive();
+
+            telemetryClientTemplate.send(telemetryClientTemplate.DIAGNOSTIC_MESSAGE);
+            diagnosticInfo = telemetryClientTemplate.receive();
     }
 }
